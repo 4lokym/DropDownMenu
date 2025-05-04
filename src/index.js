@@ -1,9 +1,12 @@
 import "./style.css";
 
 class Option {
-  constructor(textContent, action) {
+  constructor(textContent, action, bgColor, height, textColor) {
     this._textContent = textContent;
     this._action = action;
+    this._bgColor = bgColor;
+    this._height = height;
+    this._textColor = textColor;
   }
   get textContent() {
     return this._textContent;
@@ -11,44 +14,95 @@ class Option {
   get action() {
     return this._action;
   }
+  get bgColor() {
+    return this._bgColor;
+  }
+  get height() {
+    return this._height;
+  }
+  get textcolor() {
+    return this._textColor;
+  }
 }
 
-const dropDown = function activateDropDown(
-  anchor,
-  options,
-  gap,
-  x_offset = 0,
-  y_offset = 0,
-) {
+// const dropDown = function activateDropDown(
+//   anchor,
+//   options,
+//   x_offset = 0,
+//   y_offset = 0,
+// ) {
 
-  // if (!options) {
-  //   return;
-  // }
+//   // if (!options) {
+//   //   return;
+//   // }
 
-  const point = document.createElement("div");
-  point.classList.add("point");
+//   const point = document.createElement("div");
+//   point.classList.add("point");
 
-  const reference = anchor.getBoundingClientRect();
-  // const x = reference.left + reference.width / 2 + x_offset;
-  // const y = reference.top + y_offset + reference.height;
-  const x = (reference.width / 2) + "px";
+//   const reference = anchor.getBoundingClientRect();
+//   const x = reference.left + reference.width / 2 + x_offset;
+//   const y = reference.top + y_offset + reference.height;
 
-  point.style.left = x + "px";
-  point.style.top =  "100px";
-  point.style.width = reference.width + 'px';
+//   point.style.left = x + "px";
+//   point.style.top = y + "px";
 
-  options.map(function createAndAddAnOptionOnTheDropDownMenu(option){
-    const button = document.createElement("button");
-    button.classList.add("option");
-    button.textContent = option.textContent;
-    button.addEventListener("click", option.action);
-  });
+//   document.querySelector("body").append(point);
+//   // document.querySelector(".dropDownMenu").classList.toggle("hidden");
+//   const container = document.querySelector(".dropDownMenu");
 
-  anchor.append(point);
+//   if(container.style.display === "none"){
+//     container.style.display = "flex";
+//   }else{
+//     container.style.display = "none";
+//   }
+
+// };
+
+const makeBlock = function makeBlockForDropDownList(option) {
+  const block = document.createElement("button");
+  block.textContent = option.textContent;
+  block.addEventListener("click", option.action);
+  block.style.border = "none";
+  block.style.cursor = "pointer";
+  block.style.backgroundColor = option._bgColor ? option.bgColor : "inherit";
+  block.style.color = option.textColor ? option.textColor : "inherit";
+  block.style.display = "grid";
+  block.style.alignItems = "center";
+  block.style.justifyContent = "center";
+
+  block.style.width = "100%";
+  block.style.height = option.height ? option.height : "2rem";
+
+  return block;
 };
 
-const testOption = new Option("test", () => alert("ciao"));
+const makeList = function makeDropDownList(
+  options,
+  width = "inherit",
+  bgColor = "inherit",
+  color = "inherit",
+) {
+  const dropDownList = document.createElement("div");
+  dropDownList.classList.add("dropDownList");
+  dropDownList.style.position = "absolute";
+  dropDownList.style.display = "flex";
+  dropDownList.style.flexDirection = "column";
+  dropDownList.style.width = width;
+  dropDownList.style.color = color;
+  dropDownList.style.backgroundColor = bgColor;
+
+  options.map((option) => {
+    dropDownList.appendChild(makeBlock(option));
+  });
+
+  return dropDownList;
+};
 
 document.querySelector(".options").addEventListener("click", (event) => {
-  dropDown(event.target, [testOption]);
+  event.target.parentNode.append(
+    makeList([
+      new Option("test", () => alert("test")),
+      new Option("test", () => alert("test")),
+    ]),
+  );
 });
