@@ -26,12 +26,13 @@ nav{
     border: none;
     color: inherit;
     height: 100%;
-    padding: 0px 3rem;
+    width: 6rem;
     align-content: center;
     cursor: pointer;
+    position: relative;
 }
 
-.options:hover{
+.options:hover, .option:hover{
     background-color: #531253;
     transition: all 300ms;
 }
@@ -42,5 +43,9 @@ nav{
     height: 10px;
     color: white;
     background-color: white;
-    transform: translate(-50%);
+}
+
+.option{
+    color: inherit;
+    background-color: #33032F;
 }
